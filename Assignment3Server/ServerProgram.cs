@@ -15,14 +15,19 @@ while (true)
     var client = server.AcceptTcpClient();
     Console.WriteLine("Client connected");
 
-    var t = Task.Run(() => HandleClient(client));
-    
+    try
+    {
+        var t = Task.Run(() => HandleClient(client));
+    }
+    catch (Exception)
+    {
+        Console.WriteLine("Unable to communicate with client ...");
+    }
+
 }
 
 static void HandleClient(TcpClient client)
 {
-    try
-    {
         string request = client.MyRead();
 
         var requestJson = JsonSerializer.Deserialize<Request>(request);
@@ -37,11 +42,6 @@ static void HandleClient(TcpClient client)
             var responseText = JsonSerializer.Serialize<Response>(response);
             client.MyWrite(responseText);
         }
-        
-    }
-    catch (Exception)
-    {
-        Console.WriteLine("Unable to connect to client ...");
-    }
+    
 }
 
