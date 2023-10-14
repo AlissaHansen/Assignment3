@@ -45,7 +45,7 @@ namespace Assignment3TestSuite
 
         /*    Method Tests     */
 
-#if comment
+
 
         [Fact]
         public void Constraint_RequestWithoutMethod_MissingMethodError()
@@ -58,6 +58,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing method", response.Status.ToLower());
         }
+#if comment        
         
         [Fact]
         public void Constraint_RequestWithUnknownMethod_IllegalMethodError()
