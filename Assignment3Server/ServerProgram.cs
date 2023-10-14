@@ -9,21 +9,23 @@ server.Start();
 
 Console.WriteLine("Server started");
 
-while(true)
+while (true)
 {
     var client = server.AcceptTcpClient();
     Console.WriteLine("Client connected");
-    HandleClient(client);
+
+    var t = Task.Run(() => HandleClient(client));
+    
 }
 
-static void HandleClient(TcpClient tcpClient)
+static void HandleClient(TcpClient client)
 {
-    string request = tcpClient.MyRead();
+    string request = client.MyRead();
 
     Console.WriteLine($"Request: {request}");
 
     var response = request.ToUpper();
 
-    tcpClient.MyWrite(response);
+    client.MyWrite(response);
 }
 
