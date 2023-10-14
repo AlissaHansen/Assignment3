@@ -76,6 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1697212528881</updated>
       <workItem from="1697212533035" duration="1057000" />
+      <workItem from="1697214444856" duration="252000" />
     </task>
     <servers />
   </component>
@@ -84,24 +85,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assignment3Server/ServerProgram.cs</url>
-          <line>12</line>
-          <properties documentPath="$PROJECT_DIR$/Assignment3Server/ServerProgram.cs" initialLine="12" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="204" />
-            </startOffsets>
-            <endOffsets>
-              <option value="205" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
