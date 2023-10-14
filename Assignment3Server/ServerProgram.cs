@@ -20,12 +20,19 @@ while (true)
 
 static void HandleClient(TcpClient client)
 {
-    string request = client.MyRead();
+    try
+    {
+        string request = client.MyRead();
 
-    Console.WriteLine($"Request: {request}");
+        Console.WriteLine($"Request: {request}");
 
-    var response = request.ToUpper();
+        var response = request.ToUpper();
 
-    client.MyWrite(response);
+        client.MyWrite(response);
+    }
+    catch (Exception)
+    {
+        Console.WriteLine("Unable to connect to client ...");
+    }
 }
 
