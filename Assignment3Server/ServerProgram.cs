@@ -1,6 +1,7 @@
 ﻿using Assignment3Server;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json;
 
 var port = 5000;
 
@@ -24,11 +25,19 @@ static void HandleClient(TcpClient client)
     {
         string request = client.MyRead();
 
-        Console.WriteLine($"Request: {request}");
+        var requestJson = JsonSerializer.Deserialize<Request>(request);
 
-        var response = request.ToUpper();
+        if (string.IsNullOrEmpty(requestJson?.Method))
+        {
+            var response = new Response
+            {
+                Status = "4 Missing method"
+            };
 
-        client.MyWrite(response);
+            var responseText = JsonSerializer.Serialize<Response>(response);
+            client.MyWrite(responseText);
+        }
+        
     }
     catch (Exception)
     {
