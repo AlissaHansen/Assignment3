@@ -13,14 +13,17 @@ while(true)
 {
     var client = server.AcceptTcpClient();
     Console.WriteLine("Client connected");
+    HandleClient(client);
+}
 
-    string request = client.MyRead();
-    
+static void HandleClient(TcpClient tcpClient)
+{
+    string request = tcpClient.MyRead();
+
     Console.WriteLine($"Request: {request}");
 
     var response = request.ToUpper();
-    
-    client.MyWrite(response);
 
+    tcpClient.MyWrite(response);
 }
 
