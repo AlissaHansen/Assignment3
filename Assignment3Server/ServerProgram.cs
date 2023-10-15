@@ -28,20 +28,25 @@ while (true)
 
 static void HandleClient(TcpClient client)
 {
-        string request = client.MyRead();
 
-        var requestJson = JsonSerializer.Deserialize<Request>(request);
-
-        if (string.IsNullOrEmpty(requestJson?.Method))
-        {
-            var response = new Response
-            {
-                Status = "4 Missing method"
-            };
-
-            var responseText = JsonSerializer.Serialize<Response>(response);
-            client.MyWrite(responseText);
-        }
+    string statusCode;
+    string statusBody;
     
+    string request = client.MyRead();
+
+    var requestJson = JsonSerializer.Deserialize<Request>(request);
+
+    if (string.IsNullOrEmpty(requestJson?.Method))
+    {
+        statusCode = "4";
+        statusBody = "Missing method";
+        var response = new Response
+        {
+            Status = statusCode + " " + statusBody
+        };
+
+        var responseText = JsonSerializer.Serialize<Response>(response);
+        client.MyWrite(responseText);
+    }
 }
 
