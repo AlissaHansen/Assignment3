@@ -29,18 +29,51 @@ while (true)
 static void HandleClient(TcpClient client)
 {
 
-    string statusCode;
-    string statusBody;
+    string statusCode = "";
+    string statusBody = "";
     
-    string request = client.MyRead();
+    var request = client.MyRead();
 
     var requestJson = JsonSerializer.Deserialize<Request>(request);
 
     if (string.IsNullOrEmpty(requestJson?.Method))
     {
         statusCode = "4";
-        statusBody = "Missing method";
-        var response = new Response
+        statusBody += " Missing method";
+    }
+
+    if (requestJson?.Method != "create" && requestJson?.Method != "read" &&  requestJson?.Method != "update" 
+        && requestJson?.Method != "delete" && requestJson?.Method != "echo")
+    {
+        statusCode = "4";
+        statusBody += " Illegal method";
+    }
+
+    if (requestJson?.Method == "create" || requestJson?.Method == "read" || requestJson?.Method == "update" 
+        || requestJson?.Method == "delete")
+    {
+        if (string.IsNullOrEmpty(requestJson?.Path))
+        {
+            statusCode = "4";
+            statusBody += " Missing resource";
+        }
+    }
+    
+    if (request == "create" || request == "update" || request == "delete")
+    {
+        if (string.IsNullOrEmpty(requestJson?.Body))
+        {
+            statusCode = "4";
+            statusBody += " Missing resource";
+        }
+    }
+    
+    //Test om request bliver lavet til json
+    Console.WriteLine(request);
+    Console.WriteLine(requestJson?.Method);
+    
+    //send response
+    var response = new Response
         {
             Status = statusCode + " " + statusBody
         };
@@ -48,5 +81,5 @@ static void HandleClient(TcpClient client)
         var responseText = JsonSerializer.Serialize<Response>(response);
         client.MyWrite(responseText);
     }
-}
+
 
