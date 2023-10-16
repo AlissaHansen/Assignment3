@@ -32,45 +32,47 @@ static void HandleClient(TcpClient client)
     string statusCode = "";
     string statusBody = "";
     
-    var request = client.MyRead();
+    var requestJson = client.MyRead();
+    var request = JsonSerializer.Deserialize<Request>(requestJson,
+        new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
 
-    var requestJson = JsonSerializer.Deserialize<Request>(request);
-
-    if (string.IsNullOrEmpty(requestJson?.Method))
+    Console.WriteLine(requestJson);
+    Console.WriteLine(request?.Method);
+    
+    if (string.IsNullOrEmpty(request?.Method))
     {
         statusCode = "4";
         statusBody += " Missing method";
     }
 
-    if (requestJson?.Method != "create" && requestJson?.Method != "read" &&  requestJson?.Method != "update" 
-        && requestJson?.Method != "delete" && requestJson?.Method != "echo")
+    if (request?.Method != "create" && request?.Method != "read" &&  request?.Method != "update" 
+        && request?.Method != "delete" && request?.Method != "echo")
     {
         statusCode = "4";
         statusBody += " Illegal method";
     }
 
-    if (requestJson?.Method == "create" || requestJson?.Method == "read" || requestJson?.Method == "update" 
-        || requestJson?.Method == "delete")
+    if (request?.Method == "create" || request?.Method == "read" || request?.Method == "update" 
+        || request?.Method == "delete")
     {
-        if (string.IsNullOrEmpty(requestJson?.Path))
+        if (string.IsNullOrEmpty(request?.Path))
         {
             statusCode = "4";
             statusBody += " Missing resource";
         }
     }
     
-    if (request == "create" || request == "update" || request == "delete")
+    if (request?.Method == "create" || request?.Method == "update" || request?.Method == "delete")
     {
-        if (string.IsNullOrEmpty(requestJson?.Body))
+        if (string.IsNullOrEmpty(request?.Body))
         {
             statusCode = "4";
             statusBody += " Missing resource";
         }
     }
-    
-    //Test om request bliver lavet til json
-    Console.WriteLine(request);
-    Console.WriteLine(requestJson?.Method);
     
     //send response
     var response = new Response
