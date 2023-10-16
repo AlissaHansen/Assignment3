@@ -2,6 +2,9 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 var port = 5000;
 
@@ -84,8 +87,15 @@ static void HandleClient(TcpClient client)
         statusCode = "4";
         statusBody += " Illegal date";
     }
-    
-    
+
+    if (!string.IsNullOrEmpty(request?.Body))
+    {
+        if (!IsValidJson(request?.Body))
+        {
+            statusCode = "4";
+            statusBody += " Illegal body";
+        }
+    }
     
     //send response
     var response = new Response
@@ -97,4 +107,32 @@ static void HandleClient(TcpClient client)
         client.MyWrite(responseText);
     }
 
-
+static bool IsValidJson(string strInput)
+{
+    if (string.IsNullOrWhiteSpace(strInput)) { return false;}
+    strInput = strInput.Trim();
+    if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+        (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+    {
+        try
+        {
+            var obj = JToken.Parse(strInput);
+            return true;
+        }
+        catch (JsonReaderException jex)
+        {
+            //Exception in parsing json
+            Console.WriteLine(jex.Message);
+            return false;
+        }
+        catch (Exception ex) //some other exception
+        {
+            Console.WriteLine(ex.ToString());
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
