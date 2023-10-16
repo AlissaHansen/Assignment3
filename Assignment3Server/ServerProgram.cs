@@ -64,12 +64,12 @@ static void HandleClient(TcpClient client)
         }
     }
     
-    if (request?.Method == "create" || request?.Method == "update" || request?.Method == "delete")
+    if (request?.Method == "create" || request?.Method == "update" || request?.Method == "delete" || request?.Method == "echo")
     {
         if (string.IsNullOrEmpty(request?.Body))
         {
             statusCode = "4";
-            statusBody += " Missing resource";
+            statusBody += " Missing body";
         }
     }
 
@@ -84,6 +84,8 @@ static void HandleClient(TcpClient client)
         statusCode = "4";
         statusBody += " Illegal date";
     }
+    
+    
     
     //send response
     var response = new Response
