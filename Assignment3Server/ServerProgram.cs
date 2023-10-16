@@ -78,6 +78,12 @@ static void HandleClient(TcpClient client)
         statusCode = "4";
         statusBody += " Missing date";
     }
+
+    if (!int.TryParse(request?.Date, out _))
+    {
+        statusCode = "4";
+        statusBody += " Illegal date";
+    }
     
     //send response
     var response = new Response
