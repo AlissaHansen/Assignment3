@@ -65,6 +65,16 @@ static void HandleClient(TcpClient client)
         {
             statusCode = "4";
             statusBody += " Missing resource";
+        } 
+        else if (!IsValidPath(request.Path))
+        {
+            statusCode = "4";
+            statusBody = "Bad request";
+        }
+        else if (!IsIntegerValue(request.Path.Split("/").Last()))
+        {
+            statusCode = "4";
+            statusBody = "Bad request";
         }
     }
 
@@ -84,7 +94,7 @@ static void HandleClient(TcpClient client)
         statusBody += " Missing date";
     }
 
-    if (!IsValidUnixTime(request?.Date))
+    if (!IsIntegerValue(request?.Date))
     {
         statusCode = "4";
         statusBody += " Illegal date";
@@ -99,7 +109,7 @@ static void HandleClient(TcpClient client)
         }
     }
 
-    if (request?.Method == "echo" && IsValidUnixTime(request.Date))
+    if (request?.Method == "echo" && IsIntegerValue(request.Date))
     {
         if (!string.IsNullOrEmpty(request?.Body))
         {
@@ -107,22 +117,28 @@ static void HandleClient(TcpClient client)
             body = request.Body;
         }
     }
-
+    
+    
+    
 
 //send response
+
+    var emptyBody = string.IsNullOrEmpty(body);
     var response = new Response
         {
             Status = statusCode + " " + statusBody,
-            Body = body
+            Body = emptyBody ? null : body
         };
 
         var responseText = JsonSerializer.Serialize<Response>(response);
         client.MyWrite(responseText);
     }
 
-static bool IsValidUnixTime(string timeInput)
+// Methods
+
+static bool IsIntegerValue(string inputString)
 {
-    return int.TryParse(timeInput, out _);
+    return int.TryParse(inputString, out _);
 }
 
 static bool IsValidJson(string strInput)
@@ -153,4 +169,10 @@ static bool IsValidJson(string strInput)
     {
         return false;
     }
+}
+
+static bool IsValidPath(string inputPath)
+{
+    string format = "/api/categories";
+    return inputPath.StartsWith(format);
 }
