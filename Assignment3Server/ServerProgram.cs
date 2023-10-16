@@ -82,7 +82,7 @@ static void HandleClient(TcpClient client)
         statusBody += " Missing date";
     }
 
-    if (!int.TryParse(request?.Date, out _))
+    if (!IsValidUnixTime(request?.Date))
     {
         statusCode = "4";
         statusBody += " Illegal date";
@@ -106,6 +106,11 @@ static void HandleClient(TcpClient client)
         var responseText = JsonSerializer.Serialize<Response>(response);
         client.MyWrite(responseText);
     }
+
+static bool IsValidUnixTime(string timeInput)
+{
+    return int.TryParse(timeInput, out _);
+}
 
 static bool IsValidJson(string strInput)
 {
