@@ -79,7 +79,7 @@ namespace Assignment3TestSuite
             Assert.Contains("illegal method", response.Status.ToLower());
         }
 
-#if comment 
+
         [Theory]
         [InlineData("create")]
         [InlineData("read")]
@@ -101,7 +101,8 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing resource", response.Status.ToLower());
         }
- 
+        
+        
         /* Date Tests    */
 
         [Fact]
@@ -116,6 +117,8 @@ namespace Assignment3TestSuite
             Assert.Contains("missing date", response.Status.ToLower());
         }
 
+#if comment 
+        
         [Fact]
         public void Constraint_RequestWhereDateIsNotUnixTime_IllegalDateError()
         {

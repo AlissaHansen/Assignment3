@@ -40,7 +40,6 @@ static void HandleClient(TcpClient client)
         });
 
     Console.WriteLine(requestJson);
-    Console.WriteLine(request?.Method);
     
     if (string.IsNullOrEmpty(request?.Method))
     {
@@ -72,6 +71,12 @@ static void HandleClient(TcpClient client)
             statusCode = "4";
             statusBody += " Missing resource";
         }
+    }
+
+    if (string.IsNullOrEmpty(request?.Date))
+    {
+        statusCode = "4";
+        statusBody += " Missing date";
     }
     
     //send response
