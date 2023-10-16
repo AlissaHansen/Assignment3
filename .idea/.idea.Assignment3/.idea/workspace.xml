@@ -10,6 +10,7 @@
     <list default="true" id="7204f7cd-accd-43ee-8d00-ff0f5c4d3b6a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Assignment3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Assignment3/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assignment3Server/ServerProgram.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment3Server/ServerProgram.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment3TestSuite/Assignment3Tests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment3TestSuite/Assignment3Tests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

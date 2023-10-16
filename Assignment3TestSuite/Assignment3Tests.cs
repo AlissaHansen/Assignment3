@@ -182,7 +182,7 @@ namespace Assignment3TestSuite
 
         }
 
-#if comment 
+
         
         /* Echo Test */
         [Fact]
@@ -203,7 +203,7 @@ namespace Assignment3TestSuite
             Assert.Equal("Hello World", response.Body);
 
         }
-
+#if comment 
         //////////////////////////////////////////////////////////
         /// 
         /// Testing API 

@@ -34,7 +34,8 @@ static void HandleClient(TcpClient client)
 
     string statusCode = "";
     string statusBody = "";
-    
+    string body = "";
+
     var requestJson = client.MyRead();
     var request = JsonSerializer.Deserialize<Request>(requestJson,
         new JsonSerializerOptions
@@ -43,21 +44,21 @@ static void HandleClient(TcpClient client)
         });
 
     Console.WriteLine(requestJson);
-    
+
     if (string.IsNullOrEmpty(request?.Method))
     {
         statusCode = "4";
         statusBody += " Missing method";
     }
 
-    if (request?.Method != "create" && request?.Method != "read" &&  request?.Method != "update" 
+    if (request?.Method != "create" && request?.Method != "read" && request?.Method != "update"
         && request?.Method != "delete" && request?.Method != "echo")
     {
         statusCode = "4";
         statusBody += " Illegal method";
     }
 
-    if (request?.Method == "create" || request?.Method == "read" || request?.Method == "update" 
+    if (request?.Method == "create" || request?.Method == "read" || request?.Method == "update"
         || request?.Method == "delete")
     {
         if (string.IsNullOrEmpty(request?.Path))
@@ -66,8 +67,9 @@ static void HandleClient(TcpClient client)
             statusBody += " Missing resource";
         }
     }
-    
-    if (request?.Method == "create" || request?.Method == "update" || request?.Method == "delete" || request?.Method == "echo")
+
+    if (request?.Method == "create" || request?.Method == "update" || request?.Method == "delete" ||
+        request?.Method == "echo")
     {
         if (string.IsNullOrEmpty(request?.Body))
         {
@@ -96,11 +98,22 @@ static void HandleClient(TcpClient client)
             statusBody += " Illegal body";
         }
     }
-    
-    //send response
+
+    if (request?.Method == "echo" && IsValidUnixTime(request.Date))
+    {
+        if (!string.IsNullOrEmpty(request?.Body))
+        {
+            statusCode = "1";
+            body = request.Body;
+        }
+    }
+
+
+//send response
     var response = new Response
         {
-            Status = statusCode + " " + statusBody
+            Status = statusCode + " " + statusBody,
+            Body = body
         };
 
         var responseText = JsonSerializer.Serialize<Response>(response);
